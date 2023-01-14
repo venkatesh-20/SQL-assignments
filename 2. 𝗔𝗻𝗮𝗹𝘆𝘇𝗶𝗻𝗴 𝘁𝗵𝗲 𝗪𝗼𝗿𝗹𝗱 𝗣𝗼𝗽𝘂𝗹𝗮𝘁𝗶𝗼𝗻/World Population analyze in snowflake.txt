@@ -1,0 +1,101 @@
+show warehouses
+
+use warehouse SQL_ASSIGNMENTS;
+
+show databases;
+
+create database population;
+use population;
+
+show tables;
+
+create or replace table population(
+    country varchar(30),
+    area integer,
+    birth_rate float,
+    death_rate float,
+    infant_mortality_rate float,
+    internet_users integer,
+    life_exp_at_birth float,
+    mater178l_mortality_rate int,
+    net_migration_rate float,
+    population int,
+    population_growth_rate float   
+     
+);
+
+select * from population;
+
+/*
+𝗔𝗽𝗽𝗿𝗼𝗮𝗰𝗵/𝗣𝗿𝗼𝗷𝗲𝗰𝘁 𝗜𝗱𝗲𝗮 You will learn how to use SQL to answer the following analytical questions: 
+1. Which country has the highest population? 
+2. Which country has the least number of people? 
+3. Which country is witnessing the highest population growth? 
+4. Which country has an extraordinary number for the population? 
+5. Which is the most densely populated country in the world?
+
+*/
+
+==========================================================================================================
+/*              1. Which country has the highest population?                */
+
+select country from population
+order by population desc
+limit 1;
+
+
+
+
+==========================================================================================================
+/*             2. Which country has the least number of people?              */
+
+select country from population
+order by population 
+limit 1;
+
+
+
+
+==========================================================================================================
+/*              3. Which country is witnessing the highest population growth?        */
+
+select country , population_growth_rate
+from population
+order by population_growth_rate desc
+limit 1;
+
+
+
+==============================================================================================================
+/*              4. Which country has an extraordinary number for the population?        */
+
+## Which country has highest population
+
+select country 
+from population
+order by population desc
+limit 1;
+
+
+
+
+===============================================================================================================
+/*              5. Which is the most densely populated country in the world?        */
+
+##      Density = population / Area
+# In the given dataset "Holy See (Vatican City)"" area = 0 which is not possible. Either we can replace this 0 with any meaningful values or we can ignore this as of now.
+
+
+select country,(population/area) as population_density from population
+order by population_density desc
+limit 1;
+
+## **********   when we can ignore area=0 values from dataset
+
+
+select country ,(population/area) as population_density
+from population
+where area not in (0)
+order by population_density desc
+limit 1;
+
