@@ -1,0 +1,275 @@
+# Show existing warehouse
+show warehouses
+
+# create ware house and use that warehouse for our sql assignments
+use warehouse sql_assignments;
+show databases
+
+
+***********************************************************************************
+***********************TASK 1 *****************************************************
+#create new database and use that
+create database shopping;
+use shopping;
+
+#create table with columns datatype
+create table if not exists shopping_history(
+    product varchar not null,
+    quantity integer not null,
+    unit_price integer not null  );
+    
+# show empty table
+select * from shopping_history;
+# insert 10 rows
+insert into shopping_history(product,quantity,unit_price) values('milk',3,10);
+insert into shopping_history(product,quantity,unit_price) values('bread',7,3);
+insert into shopping_history(product,quantity,unit_price) values('bread',5,2);
+insert into shopping_history(product,quantity,unit_price) values('egg',8,6);
+insert into shopping_history(product,quantity,unit_price) values('chese',1,10);
+insert into shopping_history(product,quantity,unit_price) values('bunn',3,5);
+insert into shopping_history(product,quantity,unit_price) values('biscut',2,15);
+insert into shopping_history(product,quantity,unit_price) values('cookie',3,30);
+insert into shopping_history(product,quantity,unit_price) values('bunn',5,6);
+insert into shopping_history(product,quantity,unit_price) values('fruits',4,20);
+
+select * from shopping_history;
+
+# count total records in table as required 10
+select count(*) from shopping_history;
+
+
+select product, sum(quantity * unit_price) as total_price
+from shopping_history
+where product='milk' or product='bread'
+group by product;
+
+
+
+
+****************************************** TASK 2 *******************************************
+======================= 1. GIVEN ============
+
+
+# Create new table
+create or replace table phones(
+    name varchar(20) not null unique,
+    phone_number integer not null unique
+);
+
+select * from phones;
+
+# create another table
+create or replace table calls(
+    id integer not null,
+    caller integer not null,
+    callee integer not null,
+    duration integer not null,
+    unique(id)
+);
+
+select * from calls;
+
+
+# Insert entries into tables
+insert into phones (name,phone_number) values ('Jack',9891962677);
+insert into phones (name,phone_number) values ('Lena',8010405895);
+insert into phones (name,phone_number) values ('Mark',7205986478);
+insert into phones (name,phone_number) values ('Anna',7854986245);
+
+select * from phones;
+select count(*) from phones;
+
+insert into calls (id,caller,callee,duration) values (1,9891962677,45875,8);
+insert into calls (id,caller,callee,duration) values (2,8010405895,89657,4);
+insert into calls (id,caller,callee,duration) values (3,7205986478,85284,1);
+insert into calls (id,caller,callee,duration) values (4,8010405895,33003,3);
+insert into calls (id,caller,callee,duration) values (5,9891962677,89547,1);
+insert into calls (id,caller,callee,duration) values (6,7854986245,85284,8);
+insert into calls (id,caller,callee,duration) values (7,7205986478,45875,4);
+insert into calls (id,caller,callee,duration) values (8,9891962677,78945,1);
+insert into calls (id,caller,callee,duration) values (9,7854986245,85284,1);
+insert into calls (id,caller,callee,duration) values (10,8010405895,45875,1);
+insert into calls (id,caller,callee,duration) values (11,7854986245,85284,3);
+insert into calls (id,caller,callee,duration) values (12,8010405895,11000,1);
+
+select * from calls;
+select count(*) from calls;
+
+/*
+s    smelly     select
+F    feet       From
+W    will       Where
+G    give       Group By
+H    horrible   Having
+O    odors      Order By
+*/
+
+/*
+
+select c.id,c.caller,c.callee,c.duration from calls c
+left join phones p on c.caller= p.phone_number
+*/
+
+with combine_table as (
+select c.id,c.caller,c.callee,c.duration,p.name,p.phone_number from calls c
+left join phones p on c.caller= p.phone_number
+)
+select name from combine_table
+group by name
+having sum(duration)>9
+order by name;
+
+
+==================== 2.GIVEN ====================================
+
+# creating tables again
+
+
+# Create new table
+
+create or replace table phones(
+    name varchar(20) not null unique,
+    phone_number integer not null unique
+);
+
+select * from phones;
+
+# create another table
+create or replace table calls(
+    id integer not null,
+    caller integer not null,
+    callee integer not null,
+    duration integer not null,
+    unique(id)
+);
+
+select * from calls;
+
+
+# Insert entries into tables
+insert into phones (name,phone_number) values ('John',6356);
+insert into phones (name,phone_number) values ('Addison',4315);
+insert into phones (name,phone_number) values ('Kate',8003);
+insert into phones (name,phone_number) values ('Ginny',9831);
+
+select * from phones;
+select count(*) from phones;
+
+insert into calls (id,caller,callee,duration) values (65,8003,9831,7);
+insert into calls (id,caller,callee,duration) values (100,9831,8003,3);
+insert into calls (id,caller,callee,duration) values (145,4315,9831,18);
+
+
+select * from calls;
+select count(*) from calls;
+
+
+with combined as (
+select c.id,c.caller,c.callee,c.duration,p.name,p.phone_number from calls c
+left join phones p on c.caller=p.phone_number order by id desc)
+select name from combined;
+
+
+*********************************************************************************************************
+************************************************* TASK 3 ************************************************
+
+=================================1.Given =====================================
+
+create or replace table transactions(
+    amount integer not null,
+    date date not null
+);
+
+DESCRIBE TABLE transactions
+
+insert into transactions (amount,date) values (1000,'2020-01-06'  );
+insert into transactions (amount,date) values (-10,'2020-01-14'  );
+insert into transactions (amount,date) values (-75,'2020-01-20'  );
+insert into transactions (amount,date) values (-5,'2020-01-25'  );
+insert into transactions (amount,date) values (-4,'2020-01-29'  );
+insert into transactions (amount,date) values (2000,'2020-03-10'  );
+insert into transactions (amount,date) values (-75,'2020-03-12'  );
+insert into transactions (amount,date) values (-20,'2020-03-15'  );
+insert into transactions (amount,date) values (40,'2020-03-17'  );
+insert into transactions (amount,date) values (-50,'2020-03-06'  );
+insert into transactions (amount,date) values (200,'2020-10-10'  );
+insert into transactions (amount,date) values (-200,'2020-10-10'  );
+
+SELECT * FROM transactions;
+
+SELECT SUM(AMOUNT) FROM transactions;SELECT SUM(AMOUNT) FROM transactions;
+
+   
+select sum(amount)-(with base as(
+select sum(amount) as card_payment,month(date) as month, count(date) as neg_trans_count from transactions
+where amount <0 group by month )
+select (12-count(*))*5 from base where card_payment <=-100 and neg_trans_count >=3) as balance from transactions;
+
+/*
+with base as(
+select sum(amount) as card_payment,month(date) as month, count(date) as neg_trans_count from transactions
+where amount <0
+group by month )
+select (12-count(*))*5 from base where card_payment <=-100 and neg_trans_count >=3
+*/
+----------------
+
+====================================2.Given=========================================
+
+
+
+create or replace table transactions(
+    amount integer not null,
+    date date not null
+);
+
+DESCRIBE TABLE transactions
+
+insert into transactions (amount,date) values (1,'2020-06-29'  );
+insert into transactions (amount,date) values (35,'2020-02-20'  );
+insert into transactions (amount,date) values (-50,'2020-02-03'  );
+insert into transactions (amount,date) values (-1,'2020-02-26'  );
+insert into transactions (amount,date) values (-200,'2020-08-01'  );
+insert into transactions (amount,date) values (-44,'2020-02-07'  );
+insert into transactions (amount,date) values (-5,'2020-02-25'  );
+insert into transactions (amount,date) values (1,'2020-06-29'  );
+insert into transactions (amount,date) values (1,'2020-06-29'  );
+insert into transactions (amount,date) values (-100,'2020-12-29'  );
+insert into transactions (amount,date) values (-100,'2020-12-30'  );
+insert into transactions (amount,date) values (-100,'2020-12-31'  );
+
+select * from transactions;
+
+select sum(amount) from transactions;
+
+select sum(amount)-(with base as(
+select sum(amount) as card_payment,month(date) as month, count(date) as neg_trans_count from transactions
+where amount <0 group by month )
+select (12-count(*))*5 from base where card_payment <=-100 and neg_trans_count >=3) as balance from transactions;
+
+
+===========================3 GIVEN =======================================
+
+
+
+create or replace table transactions(
+    amount integer not null,
+    date date not null
+);
+
+
+insert into transactions (amount,date) values (6000,'2020-04-03');
+insert into transactions (amount,date) values (5000,'2020-04-02');
+insert into transactions (amount,date) values (4000,'2020-04-01');
+insert into transactions (amount,date) values (3000,'2020-03-01');
+insert into transactions (amount,date) values (2000,'2020-02-01');
+insert into transactions (amount,date) values (1000,'2020-01-01');
+
+select * from transactions;
+
+select sum(amount) from transactions;
+
+select sum(amount)-(with base as(
+select sum(amount) as card_payment,month(date) as month, count(date) as neg_trans_count from transactions
+where amount <0 group by month )
+select (12-count(*))*5 from base where card_payment <=-100 and neg_trans_count >=3) as balance from transactions;
